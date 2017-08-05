@@ -28,7 +28,26 @@ r = requests.get (url, headers = _headers,  cookies = cookies)
 
 body = html.fromstring(r.text)
 soup = BeautifulSoup(r.text, 'lxml')
-print(soup)
+#print(soup)
+
+
+table = soup.find(id = 'primary2' )
+items = table.select('.propertyOuter')
+hotels = []
+
+for item in items:
+	if(item.h2):
+		hotel = {}
+		#hotel_name = item.find('h3')
+		hotel['hotel_name_cn'] = item.h2.a.text.strip().replace('\t','').replace('\n','')
+		hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
+		#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
+		hotel['price'] = item.find(class_ = "currency").text#.replace(',','').split(' ')[1])
+		hotels.append(hotel)
+print('一共有:'+str(len(hotels))+'家')
+print(hotels)
+
+
 #print(soup.prettify())
 '''
 table = soup.find(id = 'comparison-form')
