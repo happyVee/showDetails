@@ -39,7 +39,7 @@ def parsesoup(soup):
 		hotel['price'] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
 		hotels.append(hotel)
 	print('一共有:'+str(len(hotels))+'家')
-	print(hotels)
+	#print(hotels)
 	return hotels
 
 def querydata(url,_headers,cookies):
@@ -56,13 +56,18 @@ def getparams():
 	'lengthOfStay':1,
 	'recordsPerPage':20,
 	'clusterCode':''
-	}  
+	} 
+	return queryinfo 
 
 if __name__ == '__main__':
 	cookies = requests.get(_url, headers= _headers).cookies
-
+	queryinfo = getparams()
 	basic_url = "http://www.marriott.com.cn/search/submitSearch.mi"
 	url = basic_url + '?' + urllib.parse.urlencode(queryinfo)
 	print(url)
 	soup = querydata(url,_headers,cookies)
-	parsesoup(soup)
+	hotels = parsesoup(soup)
+	for i in hotels:
+	    for v,k in i.items():
+	        print('{v}:{k}'.format(v=v,k=k))
+	    print()

@@ -21,7 +21,9 @@ resp = requests.get(_url, headers= _headers)
 cookies = resp.cookies    
 
 
-url = 'http://www.starwoodhotels.com/preferredguest/search/results/detail.html?country=CN&stateProvince=SHA&city=Shanghai&arrivalDate=17%E5%B9%B408%E6%9C%8823%E6%97%A5&departureDate=17%E5%B9%B408%E6%9C%8824%E6%97%A5'
+#url = 'http://www.starwoodhotels.com/preferredguest/search/results/detail.html?country=CN&stateProvince=SHA&city=Shanghai&arrivalDate=17%E5%B9%B408%E6%9C%8823%E6%97%A5&departureDate=17%E5%B9%B408%E6%9C%8824%E6%97%A5'
+url = 'http://www.starwoodhotels.com/preferredguest/search/results/detail.html?country=CN&stateProvince=SHA&city=Shanghai&arrivalDate=17年08月23日&departureDate=17年08月24日'
+
 #url = "http://www.marriott.com.cn/search/submitSearch.mi?destinationAddress.destination=China&fromDate=2017-07-29&toDate=2017-07-30&lengthOfStay=1&recordsPerPage=40&clusterCode=oxd"
 #basic_url = "http://www.marriott.com.cn/search/submitSearch.mi"
 r = requests.get (url, headers = _headers,  cookies = cookies)
@@ -36,17 +38,21 @@ items = table.select('.propertyOuter')
 hotels = []
 
 for item in items:
-	if(item.h2):
+	if(item.div['data-have-rates']!="false"):
 		hotel = {}
 		#hotel_name = item.find('h3')
 		hotel['hotel_name_cn'] = item.h2.a.text.strip().replace('\t','').replace('\n','')
 		hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
 		#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
-		hotel['price'] = item.find(class_ = "currency").text#.replace(',','').split(' ')[1])
+		hotel['price'] = item.find(class_ = "currency").text.replace(',','').split(' ')[1]
 		hotels.append(hotel)
 print('一共有:'+str(len(hotels))+'家')
-print(hotels)
+#print(hotels)
 
+for i in hotels:
+    for k,v in i.items():
+        print('{k}:{v}'.format(k=k,v=v))
+    print()
 
 #print(soup.prettify())
 '''
