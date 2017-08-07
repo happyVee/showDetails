@@ -1,21 +1,19 @@
-import requests
-import urllib
-from urllib import parse as urlparse
-from lxml import html
-from bs4 import BeautifulSoup
+#Coding = 'utf-8'
 
-_url = 'http://www.marriott.com.cn/search/findHotels.mi'
+class Marriott():
+	def __init__(self,params):
+		self._url = 'http://www.marriott.com.cn/search/findHotels.mi'
+		self._headers = {
+			'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+		'Accept-Encoding':'gzip, deflate, sdch',
+		'Accept-Language':'zh-CN,zh;q=0.8',
+		'Connection':'keep-alive',
+		'Host':'www.marriott.com.cn',
+		'Referer':'http://www.marriott.com.cn/default.mi',
+		'Upgrade-Insecure-Requests':'1',
+		'User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+		}
 
-_headers = {
-	'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding':'gzip, deflate, sdch',
-'Accept-Language':'zh-CN,zh;q=0.8',
-'Connection':'keep-alive',
-'Host':'www.marriott.com.cn',
-'Referer':'http://www.marriott.com.cn/default.mi',
-'Upgrade-Insecure-Requests':'1',
-'User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
-}
 
 
 
