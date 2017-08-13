@@ -28,6 +28,9 @@ class Marriott():
 		
 
 	def formatParams(self,params):
+		if 'day_num' not in params.keys():
+			params['day_num'] = 1
+
 		if 'day_cin' in params.keys():
 			day_cin= params['day_cin'][0:4] + '-' + params['day_cin'][4:6] + "-" + params['day_cin'][6:8]
 		else:
@@ -43,8 +46,8 @@ class Marriott():
 
 		self._params['destinationAddress.destination'] = params['place'] if 'place' in params.keys() else"Shanghai"
 
-		self._params['lengthOfStay'] = params['day_num'] if 'day_num' in params.keys() else 1
-		self._params['recordsPerPage'] = params['per_page'] if 'per_page' in params.keys() else 20
+		self._params['lengthOfStay'] = params['day_num']
+		self._params['recordsPerPage'] = params['per_page'] if 'per_page' in params.keys() else 40
 		self._params['clusterCode'] = params['code'] if 'code' in params.keys() else ""
 
 
@@ -52,7 +55,7 @@ class Marriott():
 		self.url = self._url + '?' + urllib.parse.urlencode(self._params)
 
 	def getSource(self):
-		print("正在打开网页：" + self.url)
+		#print("正在打开网页：" + self.url)
 		self.req = requests.get (self.url, headers = self._headers,  cookies = self._cookies)
 		self.body = html.fromstring(self.req.text)
 		self.soup = BeautifulSoup(self.req.text, 'lxml')

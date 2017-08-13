@@ -49,7 +49,7 @@ class Starwood():
 		self.url = self._url + '?' + urllib.parse.urlencode(self._params)
 
 	def getSource(self):
-		print("正在打开网页：" + self.url)
+		#print("正在打开网页：" + self.url)
 		self.req = requests.get (self.url, headers = self._headers,  cookies = self._cookies)
 		self.body = html.fromstring(self.req.text)
 		self.soup = BeautifulSoup(self.req.text, 'lxml')

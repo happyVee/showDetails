@@ -35,6 +35,7 @@ class MainQuery():
 if __name__ == '__main__':
 	place = 'Shanghai'
 	day_in = '20170901'
+	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[7:8]+"日的酒店")
 	#day_out = '20170827'
 	day_num = 1 
 	vee = MainQuery(place,day_in,day_num)
