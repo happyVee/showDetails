@@ -5,8 +5,8 @@ import urllib
 from urllib import parse as urlparse
 from lxml import html
 from bs4 import BeautifulSoup
-from Marriott import Marriott
-from Starwood import Starwood
+from marriott import Marriott
+from starwood import Starwood
 
 class MainQuery():
 	def __init__(self,place,day_cin,day_num):
