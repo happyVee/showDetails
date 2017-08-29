@@ -68,6 +68,7 @@ class Marriott():
 		for item in items:
 			hotel = {}
 			#hotel_name = item.find('h3')
+			hotel['unique_id'] = item['id'].split('-')[2]
 			hotel['hotel_name_cn'] = item.h3.a['title']
 			hotel['hotel_name_en'] = item.h3.span.text
 			#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
@@ -82,3 +83,24 @@ class Marriott():
 		self.getSource()
 		self.parseSoup()
 		return self.hotels
+
+
+	def getMonth(self):
+		self.monthRate = {}
+		
+
+	def getMonthRate(self):
+		self.url = 'http://www.marriott.com.cn/reservation/availabilitySearch.mi?propertyCode=SHACA&isSearch=true&isRateCalendar=true&flexibleDateSearchRateDisplay=false&fromDate=17-09-01&toDate=17-09-02&incentiveType=false&numberOfRooms=1&numberOfGuests=2'
+		self.session = requests.Session()
+		self.session.get(self.basic_url,headers = self._headers)
+		self.newbody = self.session.get(self.url)
+		f = open('new1.html','w')
+		f.write(self.newbody.text)
+		f.close
+
+		self.url = "http://www.marriott.com.cn/reservation/availabilitySearch.mi?istl_enable=true&istl_data"
+		self.newbody = self.session.get(self.url)
+		f = open('new2.html','w')
+		f.write(self.newbody.text)
+		f.close
+

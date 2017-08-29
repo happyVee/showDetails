@@ -59,3 +59,21 @@ url = 'http://www.starwoodhotels.com/preferredguest/search/results/detail.html?c
 url = 'http://www.starwoodhotels.com/preferredguest/search/results/detail.html?country=CN&stateProvince=SHA&city=Shanghai&arrivalDate=17%E5%B9%B408%E6%9C%8823%E6%97%A5&departureDate=17%E5%B9%B408%E6%9C%8824%E6%97%A5'
 
 '''
+
+flexibleDateSearch
+
+http://www.marriott.com.cn/search/submitSearch.mi?groupMessage=&useRewardsPtsMessage=&corpCodeBlankMessage=&awardTypeBlankMessage=&airportName=&countryName=&js-location-nearme-values=&searchType=InCity&groupCode=&searchRadius=50&poiName=&poiCity=&recordsPerPage=20&vsMarriottBrands=&singleSearchAutoSuggest=&autoSuggestItemType=&search-countryRegion=&search-locality=&singleSearch=true&destinationAddress.city=&destinationAddress.stateProvince=&destinationAddress.country=&airportCode=&for-hotels-nearme=%E9%9D%A0%E8%BF%91&is-hotelsnerame-clicked=false&destinationAddress.latitude=&destinationAddress.longitude=&destinationAddress.cityPopulation=0&destinationAddress.cityPopulationDensity=0&js-location-nearme-values=&destinationAddress.destination=%E4%B8%8A%E6%B5%B7&fromToDate=9+%E6%9C%88+2%E6%97%A5%2C+%E5%91%A8%E5%85%AD&fromToDate_submit=2017-09-02&fromDate=2017-09-01&toDate=2017-09-02&flexibleDateSearch=true&roomCountBox=1+%E5%AE%A2%E6%88%BF&roomCount=1&guestCountBox=2+%E6%88%90%E4%BA%BA++%E6%AF%8F%E9%97%B4%E5%AE%A2%E6%88%BF&numAdultsPerRoom=2&childrenCountBox=0+%E5%84%BF%E7%AB%A5+%E6%AF%8F%E9%97%B4%E5%AE%A2%E6%88%BF&childrenCount=0&childrenAges=&clusterCode=none&corporateCode=
+
+http://www.marriott.com.cn/reservation/availabilitySearch.mi?propertyCode=SHAFN&isSearch=true&isRateCalendar=true&flexibleDateSearchRateDisplay=false&flexibleDateLowestRateMonth=&flexibleDateLowestRateDate=&fromDate=17-09-01&toDate=17-09-02&clusterCode=&corporateCode=&groupCode=&numberOfRooms=1&numberOfGuests=2&incentiveType_Number=&incentiveType=false&marriottRewardsNumber=&useRewardsPoints=false&numberOfChildren=0&childrenAges=&numberOfAdults=2
+
+SHACA
+&clusterCode=&numberOfRooms=1&numberOfGuests=2
+&useRewardsPoints=false
+
+newurl = 'http://www.marriott.com.cn/reservation/availabilitySearch.mi?propertyCode=SHACA&isSearch=true&isRateCalendar=true&flexibleDateSearchRateDisplay=false&fromDate=17-09-01&toDate=17-09-02&incentiveType=false&numberOfRooms=1&numberOfGuests=2'
+
+
+newurl = 'http://www.marriott.com.cn/search/submitSearch.mi?&destinationAddress.city=%E4%B8%8A%E6%B5%B7&countryName=China&searchType=InCity&singleSearchAutoSuggest=true&autoSuggestItemType=city&singleSearch=true&searchRadius=50&searchType=InCity&recordsPerPage=20&vsInitialRequest=false&dimensions=0&isSearch=false&isHwsGroupSearch=true&destinationAddress.destination=%E4%B8%8A%E6%B5%B7%2C+China&fromToDate_submit=2017-09-02&fromDate=2017-09-01&toDate=2017-09-02&flexibleDateSearch=true&roomCount=1&numAdultsPerRoom=2'
+
+
+http://www.marriott.com.cn/reservation/availabilitySearch.mi?propertyCode=SHAFN&isSearch=true&isRateCalendar=true&flexibleDateSearchRateDisplay=false&flexibleDateLowestRateMonth=&flexibleDateLowestRateDate=&fromDate=17-09-01&toDate=17-09-02&clusterCode=&corporateCode=&groupCode=&numberOfRooms=1&numberOfGuests=2&incentiveType_Number=&incentiveType=false&marriottRewardsNumber=&useRewardsPoints=false&numberOfChildren=0&childrenAges=&numberOfAdults=2

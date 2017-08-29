@@ -22,6 +22,7 @@ class MainQuery():
 	def getResult(self):
 		self.hotels = self.starwood.getHotels()
 		self.hotels = self.hotels + self.marriott.getHotels()
+		self.hotels = sorted(self.hotels,key = lambda hotel:hotel['price'])
 
 	def showResult(self):
 		print("")
@@ -31,16 +32,22 @@ class MainQuery():
 		        print('{k}:{v}'.format(k=k,v=v))
 		    print()
 
+	def getMonth(self):
+		vee.starwood.getMonth()
+		vee.marriott.getMonth()
+
 
 if __name__ == '__main__':
 	place = 'Shanghai'
-	day_in = '20170901'
+	day_in = '20170902'
 	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[7:8]+"日的酒店")
 	#day_out = '20170827'
 	day_num = 1 
 	vee = MainQuery(place,day_in,day_num)
 	vee.getResult()
 	vee.showResult()
+	vee.getMonth()
+	#vee.marriott.getMonthRate()
 	
 
 

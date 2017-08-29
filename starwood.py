@@ -63,6 +63,7 @@ class Starwood():
 			if(item.div['data-have-rates']!="false"):
 				hotel = {}
 				#hotel_name = item.find('h3')
+				hotel['unique_id'] = item.div['data-property-id']
 				hotel['hotel_name_cn'] = item.h2.a.text.strip().replace('\t','').replace('\n','')
 				hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
 				#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
@@ -78,6 +79,9 @@ class Starwood():
 		self.getSource()
 		self.parseSoup()
 		return self.hotels
+
+	def getMonth(self):
+		return 
 
 
 '''
