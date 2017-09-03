@@ -7,6 +7,7 @@ from lxml import html
 from bs4 import BeautifulSoup
 from marriott import Marriott
 from starwood import Starwood
+import json
 
 class MainQuery():
 	def __init__(self,place,day_cin,day_num):
@@ -30,25 +31,28 @@ class MainQuery():
 		for i in self.hotels:
 		    for k,v in i.items():
 		        print('{k}:{v}'.format(k=k,v=v))
-		    print()
+		    print()#
 
 	def getMonth(self):
 		vee.starwood.getMonth()
 		vee.marriott.getMonth()
 
+	def saveToTxt(self):
+		json.dump(self.hotels,open('hotels.txt','w'))
+		self.details = dict(vee.marriott.hotelRateDetial, **vee.starwood.hotelRateDetial)
+		json.dump(self.details,open('details.txt','w'))
 
 if __name__ == '__main__':
 	place = 'Shanghai'
-	day_in = '20170902'
-	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[7:8]+"日的酒店")
+	day_in = '20170926'
+	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[6:8]+"日的酒店")
 	#day_out = '20170827'
-	day_num = 1 
+	day_num = 10 
 	vee = MainQuery(place,day_in,day_num)
 	vee.getResult()
 	vee.showResult()
 	vee.getMonth()
-	#vee.marriott.getMonthRate()
-	
+	vee.saveToTxt()
 
 
 

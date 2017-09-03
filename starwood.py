@@ -24,40 +24,59 @@ class Starwood():
 		}
 
 		self._cookies = requests.get(self.basic_url, headers= self._headers).cookies
-		self.hotels = []
 		self._params = {}
+		self.dayin_list = []
+		self.dayout_list = []
+		self.hotels = []
+		self.hotelRateDetial = {}
 		self.formatParams(params)
-		
-	def formatParams(self,params):
+
+	def getDayList(self,params):
+		self.day_num = params['day_num']
 		if 'day_cin' in params.keys():
-			day_cin = params['day_cin'][0:4] + '年' + params['day_cin'][4:6] + "月" + params['day_cin'][6:8] + "日"
+			year = int(params['day_cin'][2:4])
+			month = int(params['day_cin'][4:6])
+			day = int(params['day_cin'][6:8])
 		else:
-			day_cin = "2017年08月26日"
+			day_cin = "09/15/2017"#should get today num
 
-		if 'day_out' in params.keys():
-			day_out = params['day_out'][0:4] + '年' + params['day_out'][4:6] + "月" + params['day_out'][6:8] + "日"
+		monthnum = [31,28 if year%4 else 29,31,30,31,30,31,31,30,31,30,31]
+
+		for i in range(0,self.day_num):
+			self.dayin_list.append(str(year) +'年'+('0' if month < 10 else '')+str(month) + '月' + ('0' if day < 10 else '')+str(day) + '日')
+			#self.dayin_list.append( ('0' if month < 10 else '') + str(month)+ '/' + ('0' if day < 10 else '') + str(day) + '/' + str(year))
+			if day < monthnum[month-1]:
+				day = day + 1
+			else:
+				year = year + 1 if month == 12 else year
+				month = ( month + 1 ) if month < 12 else 1
+				day = 1
+			self.dayout_list.append(str(year) +'年'+('0' if month < 10 else '')+str(month) + '月' + ('0' if day < 10 else '')+str(day) + '日')
+			#self.dayout_list.append( ('0' if month < 10 else '') + str(month)+ '/' + ('0' if day < 10 else '') + str(day) + '/' + str(year))
+	
+	def formatParams(self,params):
+		if 'day_num' not in params.keys():
+			self.day_num = 30
 		else:
-			day_out= params['day_cin'][0:4] + '年' + params['day_cin'][4:6] + "月" + str(int(params['day_cin'][6:8]) + params['day_num']) + "日"
+			self.day_num = params['day_num']
 
-		self._params['arrivalDate']   = day_cin
-		self._params['departureDate'] = day_out
+		self.getDayList(params)
+		self._params['arrivalDate']   = self.dayin_list[0]
+		self._params['departureDate'] = self.dayout_list[0]
 
 		self._params['country'] = 'CN'
 		self._params['city'] = params['place'] if 'place' in params.keys() else "Shanghai"
 
-	def geneUrl(self):
+	def getSource(self):		
 		self.url = self._url + '?' + urllib.parse.urlencode(self._params)
-
-	def getSource(self):
-		#print("正在打开网页：" + self.url)
+		print("正在打开网页：" + self.url)
 		self.req = requests.get (self.url, headers = self._headers,  cookies = self._cookies)
 		self.body = html.fromstring(self.req.text)
 		self.soup = BeautifulSoup(self.req.text, 'lxml')
 
-	def parseSoup(self):
+	def parseHotels(self):
 		table = self.soup.find(id = 'primary2' )
 		items = table.select('.propertyOuter')
-		hotels = []
 
 		for item in items:
 			if(item.div['data-have-rates']!="false"):
@@ -68,20 +87,46 @@ class Starwood():
 				hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
 				#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
 				hotel['price'] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
-				hotels.append(hotel)
+				self.hotelRateDetial[hotel['unique_id']] = {
+					'name_en': hotel['hotel_name_cn'],
+					'name_cn': hotel['hotel_name_en'],
+					'price':{
+					self.changeDayFormat(self._params['arrivalDate']):int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
+					},
+				}
+				hotel['detail'] = self.hotelRateDetial[hotel['unique_id']]
+				self.hotels.append(hotel)
 
-		print('Total SPG:'+str(len(hotels))+'!!')
-		self.hotels = hotels
+		print('Total SPG:'+str(len(self.hotels))+'!!')
 
+	def parseMonthDetail(self):
+		table = self.soup.find(id = 'primary2' )
+		items = table.select('.propertyOuter')
+		for item in items:
+			if(item.div['data-have-rates']!="false"):
+				unique_id = item.div['data-property-id']
+				self.hotelRateDetial[unique_id]['price'][self.changeDayFormat(self._params['arrivalDate'])] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 
 	def getHotels(self):
-		self.geneUrl()
 		self.getSource()
-		self.parseSoup()
+		self.parseHotels()
 		return self.hotels
 
 	def getMonth(self):
-		return 
+		if(self.hotels == []):
+			self.getHotels()
+		for i in range(1,self.day_num):
+				self._params['arrivalDate'] = self.dayin_list[i]
+				self._params['departureDate']   = self.dayout_list[i]
+				self.getSource()
+				self.parseMonthDetail()
+		self.save()
+
+	def changeDayFormat(self,paramDay):
+		return paramDay[0:2]+paramDay[3:5]+paramDay[6:8]
+
+	def save(self):
+		return
 
 
 '''
