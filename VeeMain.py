@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from marriott import Marriott
 from starwood import Starwood
 import json
+import matplotlib.pyplot as plt  
 
 class MainQuery():
 	def __init__(self,place,day_cin,day_num):
@@ -42,12 +43,26 @@ class MainQuery():
 		self.details = dict(vee.marriott.hotelRateDetial, **vee.starwood.hotelRateDetial)
 		json.dump(self.details,open('details.txt','w'))
 
+	def showByImage(self):
+		ih = self.details['SHARN']
+		price = ih['price']
+		xda = list(price.keys())
+		yda = list(price.values())
+		x = range(0,len(xda))
+		plt.xlabel('day')
+		plt.ylabel('price')
+		plt.title(ih['name_en'])
+		plt.plot(x,yda,'y')
+		plt.xticks(x,xda,rotation=90)
+		plt.grid() 
+		plt.show()
+
 if __name__ == '__main__':
 	place = 'Shanghai'
-	day_in = '20170926'
+	day_in = '20170905'
 	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[6:8]+"日的酒店")
 	#day_out = '20170827'
-	day_num = 10 
+	day_num = 35 
 	vee = MainQuery(place,day_in,day_num)
 	vee.getResult()
 	vee.showResult()

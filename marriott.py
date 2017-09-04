@@ -102,12 +102,27 @@ class Marriott():
 		items = table.select(".merch-property-records")
 		for item in items:
 			unique_id = item['id'].split('-')[2]
-			self.hotelRateDetial[unique_id]['price'][self._params['fromDate'].replace('-','')[2:8]] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
+			if unique_id not in self.hotelRateDetial.keys():
+				self.parseHotels()
+			else:
+				self.hotelRateDetial[unique_id]['price'][self._params['fromDate'].replace('-','')[2:8]] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
 
 	def getHotels(self):
 		self.getSource()
 		self.parseHotels()
 		return self.hotels
+
+	def getSpeDay(self,dayin):
+		year = int(dayin[0:4])
+		month = int(dayin[4:6])
+		day = int(dayin[6:8])
+		monthnum = [31,28 if year%4 else 29,31,30,31,30,31,31,30,31,30,31]
+		dayO = (day+1) if day < monthnum[month-1] else 1
+		monthO = month if day < monthnum[month-1] else (1 if month == 12 else (month + 1 ))
+		yearO = (year + 1) if (day == 31 and month == 12) else year
+		self._params['fromDate'] = str(year) + "-" + ('0' if month < 10 else '')+str(month) + '-' + ('0' if day < 10 else '') + str(day)
+		self._params['toDate'] = str(yearO) + "-" + ('0' if monthO < 10 else '')+str(monthO) + '-' + ('0' if dayO < 10 else '') + str(dayO)
+
 
 	def getMonth(self):
 		if(self.hotels == []):

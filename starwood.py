@@ -105,7 +105,10 @@ class Starwood():
 		for item in items:
 			if(item.div['data-have-rates']!="false"):
 				unique_id = item.div['data-property-id']
-				self.hotelRateDetial[unique_id]['price'][self.changeDayFormat(self._params['arrivalDate'])] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
+				if unique_id not in self.hotelRateDetial.keys():
+					self.parseHotels()
+				else:
+					self.hotelRateDetial[unique_id]['price'][self.changeDayFormat(self._params['arrivalDate'])] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 
 	def getHotels(self):
 		self.getSource()
