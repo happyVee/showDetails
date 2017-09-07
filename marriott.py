@@ -67,7 +67,7 @@ class Marriott():
 
 	def getSource(self):
 		self.url = self._url + '?' + urllib.parse.urlencode(self._params)
-		print("正在打开网页：" + self.url)
+		print("正在查询：" + self._params['fromDate'])
 		self.req = requests.get (self.url, headers = self._headers,  cookies = self._cookies)
 		self.body = html.fromstring(self.req.text)
 		self.soup = BeautifulSoup(self.req.text, 'lxml')
@@ -106,6 +106,7 @@ class Marriott():
 				self.parseHotels()
 			else:
 				self.hotelRateDetial[unique_id]['price'][self._params['fromDate'].replace('-','')[2:8]] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
+		print("获取万豪"+ self._params['arrivalDate'] + "的数据成功")
 
 	def getHotels(self):
 		self.getSource()

@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 from marriott import Marriott
 from starwood import Starwood
 import json
-import matplotlib.pyplot as plt  
+import matplotlib.pyplot as plt
+from pylab import *
 
 class MainQuery():
 	def __init__(self,place,day_cin,day_num):
@@ -43,26 +44,40 @@ class MainQuery():
 		self.details = dict(vee.marriott.hotelRateDetial, **vee.starwood.hotelRateDetial)
 		json.dump(self.details,open('details.txt','w'))
 
-	def showByImage(self):
-		ih = self.details['SHARN']
+	def showByImage(self,key,num,num_all):
+		#figure = plt.figure()
+		plt.subplot(num_all,1,num)
+		ih = self.details[key]
 		price = ih['price']
 		xda = list(price.keys())
 		yda = list(price.values())
 		x = range(0,len(xda))
-		plt.xlabel('day')
+		#plt.xlabel('day')
 		plt.ylabel('price')
-		plt.title(ih['name_en'])
+		plt.title(ih['name_cn'])
 		plt.plot(x,yda,'y')
-		plt.xticks(x,xda,rotation=90)
-		plt.grid() 
-		plt.show()
+		plt.xticks(x,xda,rotation=30)
+		for a,b in zip(x,yda):
+			plt.text(a, b+1, '%.0f' % b, ha='center', va= 'bottom',fontsize=7)
+		plt.ylim(0, (int(max(yda)/100)+1)*100)
+
+	def showAllImage(self):
+		num_all = len(self.details)
+		num = 1
+		for key in vee.details:
+			self.showByImage(key,num,num_all)
+			num = num+1
+		plt.grid()
+		plot.show()
+		
 
 if __name__ == '__main__':
+	mpl.rcParams['font.san-serif'] = ['SimHei']
 	place = 'Shanghai'
-	day_in = '20170905'
+	day_in = '20170908'
 	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[6:8]+"日的酒店")
 	#day_out = '20170827'
-	day_num = 35 
+	day_num = 30 
 	vee = MainQuery(place,day_in,day_num)
 	vee.getResult()
 	vee.showResult()

@@ -69,7 +69,7 @@ class Starwood():
 
 	def getSource(self):		
 		self.url = self._url + '?' + urllib.parse.urlencode(self._params)
-		print("正在打开网页：" + self.url)
+		print("正在查询：" + self._params['arrivalDate'])
 		self.req = requests.get (self.url, headers = self._headers,  cookies = self._cookies)
 		self.body = html.fromstring(self.req.text)
 		self.soup = BeautifulSoup(self.req.text, 'lxml')
@@ -109,6 +109,7 @@ class Starwood():
 					self.parseHotels()
 				else:
 					self.hotelRateDetial[unique_id]['price'][self.changeDayFormat(self._params['arrivalDate'])] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
+		print("获取SPG"+ self._params['arrivalDate'] + "的数据成功")
 
 	def getHotels(self):
 		self.getSource()
