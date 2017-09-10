@@ -48,36 +48,51 @@ class MainQuery():
 		#figure = plt.figure()
 		plt.subplot(num_all,1,num)
 		ih = self.details[key]
+		#plt.subplot(1,1,1)
 		price = ih['price']
 		xda = list(price.keys())
 		yda = list(price.values())
 		x = range(0,len(xda))
 		#plt.xlabel('day')
 		plt.ylabel('price')
-		plt.title(ih['name_cn'])
+		plt.title(ih['name_en'])
 		plt.plot(x,yda,'y')
 		plt.xticks(x,xda,rotation=30)
 		for a,b in zip(x,yda):
 			plt.text(a, b+1, '%.0f' % b, ha='center', va= 'bottom',fontsize=7)
 		plt.ylim(0, (int(max(yda)/100)+1)*100)
+		#plt.grid()
+		#plot.show()
 
 	def showAllImage(self):
 		num_all = len(self.details)
 		num = 1
 		for key in vee.details:
-			self.showByImage(key,num,num_all)
-			num = num+1
+			if num < 3:
+				self.showByImage(key,num,num_all)
+				num = num+1
 		plt.grid()
 		plot.show()
-		
+
+	def showLowestPrice(self):
+		self.lowest = {}
+		for key in self.details:
+			item = self.details[key]
+			price = item['price']
+			self.lowest[key] = {'price':min(zip(price.values(),price.keys()),'name' = item['name_cn'])}
+
+	def getDetails():
+	with open('details.txt','r') as f:
+		details = json.load(f)
+		return details
 
 if __name__ == '__main__':
-	mpl.rcParams['font.san-serif'] = ['SimHei']
+	#mpl.rcParams['font.san-serif'] = ['SimHei']
 	place = 'Shanghai'
-	day_in = '20170908'
+	day_in = '20170911'
 	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[6:8]+"日的酒店")
 	#day_out = '20170827'
-	day_num = 30 
+	day_num = 30
 	vee = MainQuery(place,day_in,day_num)
 	vee.getResult()
 	vee.showResult()

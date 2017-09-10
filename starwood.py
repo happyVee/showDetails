@@ -106,7 +106,20 @@ class Starwood():
 			if(item.div['data-have-rates']!="false"):
 				unique_id = item.div['data-property-id']
 				if unique_id not in self.hotelRateDetial.keys():
-					self.parseHotels()
+					hotel = {}
+					hotel['unique_id'] = item.div['data-property-id']
+					hotel['hotel_name_cn'] = item.h2.a.text.strip().replace('\t','').replace('\n','')
+					hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
+					hotel['price'] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
+					self.hotelRateDetial[hotel['unique_id']] = {
+						'name_en': hotel['hotel_name_cn'],
+						'name_cn': hotel['hotel_name_en'],
+						'price':{
+						self.changeDayFormat(self._params['arrivalDate']):int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
+						},
+					}
+					hotel['detail'] = self.hotelRateDetial[hotel['unique_id']]
+					self.hotels.append(hotel)
 				else:
 					self.hotelRateDetial[unique_id]['price'][self.changeDayFormat(self._params['arrivalDate'])] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 		print("获取SPG"+ self._params['arrivalDate'] + "的数据成功")

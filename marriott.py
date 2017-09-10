@@ -103,10 +103,23 @@ class Marriott():
 		for item in items:
 			unique_id = item['id'].split('-')[2]
 			if unique_id not in self.hotelRateDetial.keys():
-				self.parseHotels()
+				hotel = {}
+				hotel['unique_id'] = item['id'].split('-')[2]
+				hotel['hotel_name_cn'] = item.h3.a['title']
+				hotel['hotel_name_en'] = item.h3.span.text
+				hotel['price'] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
+				self.hotelRateDetial[hotel['unique_id']] = {
+					'name_en': item.h3.span.text,
+					'name_cn': item.h3.a['title'],
+					'price':{
+					self._params['fromDate'].replace('-','')[2:8]:int(item.find(class_ = "t-price").text.strip().replace(',',''))
+					},
+				}
+				hotel['detail'] = self.hotelRateDetial[hotel['unique_id']]
+				self.hotels.append(hotel)
 			else:
 				self.hotelRateDetial[unique_id]['price'][self._params['fromDate'].replace('-','')[2:8]] = int(item.find(class_ = "t-price").text.strip().replace(',',''))
-		print("获取万豪"+ self._params['arrivalDate'] + "的数据成功")
+		print("获取万豪"+ self._params['fromDate'] + "的数据成功")
 
 	def getHotels(self):
 		self.getSource()
