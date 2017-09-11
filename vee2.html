@@ -5,12 +5,25 @@
     <title>画图</title>   
      <script src="//www.chartjs.org/dist/2.7.0/Chart.bundle.js"></script>
      <script src="//www.chartjs.org/samples/latest/utils.js"></script>
-
+     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
      <style>
-    .chart-container {
-        margin-left: 40px;
-        margin-right: 40px;
-    }
+        canvas{
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .chart-container {
+            width: 500px;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -23,10 +36,6 @@
 <!--引入 chartjs-->
 
 <script type="text/javascript">
- var hotel = [{"name_en":"Renaissance Shanghai Yu Garden Hotel","price":{"170911":1058,"170912":1205,"170913":1205,"170914":1205,"170915":1026,"170916":931,"170917":862,"170918":960,"170919":1156,"170920":1156,"170921":1107,"170922":979,"170923":931,"170924":816,"170925":900,"170926":900,"170927":900,"170928":816,"170929":727,"170930":727,"171001":794,"171002":794,"171003":864,"171004":864,"171005":864,"171006":752,"171007":752,"171008":794,"171009":794,"171010":900},"name_cn":"上海豫园万丽酒店"},
- {"name_en":"Courtyard Shanghai Central","price":{"170911":1262,"170912":1262,"170913":1262,"170914":1262,"170915":749,"170916":749,"170917":772,"170918":968,"170919":968,"170920":968,"170921":968,"170922":749,"170923":749,"170924":695,"170925":783,"170926":871,"170927":871,"170928":783,"170929":588,"170930":588,"171001":607,"171002":607,"171003":607,"171004":607,"171005":607,"171006":588,"171007":588,"171008":607,"171009":695,"171010":740},"name_cn":"上海浦西万怡酒店"},
- {"name_en":"Shanghai Marriott Hotel City Centre","price":{"170912":1421,"170913":1519,"170914":1421,"170915":1045,"170916":1045,"170917":1078,"170918":1225,"170919":1421,"170920":1421,"170921":1421,"170922":1045,"170923":1045,"170924":1014,"170925":1014,"170926":1191,"170927":1191,"170928":875,"170929":848,"170930":808,"171001":875,"171002":833,"171003":833,"171004":875,"171005":875,"171006":848,"171007":808,"171008":833,"171009":833,"171010":1350},"name_cn":"上海雅居乐万豪酒店"}]
- 
  function createConfig(hotelItem) {
         var priceDict = hotelItem['price'];
         var name_cn = hotelItem['name_cn'];
@@ -109,22 +118,26 @@ Chart.plugins.register({
     }
 });
 
+
 window.onload = function() {
     var container = document.querySelector('.container');
-    hotel.forEach(function(hotelItem){
-        var div = document.createElement('div');
-        div.classList.add('chart-container');
-        var canvas = document.createElement('canvas');
-        div.appendChild(canvas);
-        container.appendChild(div);
-        div.style.width = '800px';
-        div.style.height = '500px';
-        var ctx = canvas.getContext("2d");
-        new Chart(ctx,createConfig(hotelItem));
+    $.getJSON('/details.json',function(data){
+        hotel = Object.values(data);
+        alert("Totle Hotels:"+hotel.length);
+        hotel.forEach(function(hotelItem){
+            var div = document.createElement('div');
+            div.classList.add('chart-container');
+            var canvas = document.createElement('canvas');
+            div.appendChild(canvas);
+            container.appendChild(div);
+            div.style.width = '800px';
+            div.style.height = '400px';
+            var ctx = canvas.getContext("2d");
+            new Chart(ctx,createConfig(hotelItem));
+        });
     });
-    
-    
 };
+
 </script>
 </body>
 </html>

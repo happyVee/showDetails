@@ -88,8 +88,8 @@ class Starwood():
 				#hotel['address'] = item.find(class_= "m-hotel-address").text.strip().replace('\t','').replace('\n','')
 				hotel['price'] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 				self.hotelRateDetial[hotel['unique_id']] = {
-					'name_en': hotel['hotel_name_cn'],
-					'name_cn': hotel['hotel_name_en'],
+					'name_en': hotel['hotel_name_en'],
+					'name_cn': hotel['hotel_name_cn'],
 					'price':{
 					self.changeDayFormat(self._params['arrivalDate']):int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 					},
@@ -112,8 +112,8 @@ class Starwood():
 					hotel['hotel_name_en'] = item.h2.a.find_next_siblings()[0].text.strip().replace('\t','').replace('\n','')
 					hotel['price'] = int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 					self.hotelRateDetial[hotel['unique_id']] = {
-						'name_en': hotel['hotel_name_cn'],
-						'name_cn': hotel['hotel_name_en'],
+						'name_en': hotel['hotel_name_en'],
+						'name_cn': hotel['hotel_name_cn'],
 						'price':{
 						self.changeDayFormat(self._params['arrivalDate']):int(item.find(class_ = "currency").text.replace(',','').split(' ')[1])
 						},

@@ -40,9 +40,9 @@ class MainQuery():
 		vee.marriott.getMonth()
 
 	def saveToTxt(self):
-		json.dump(self.hotels,open('hotels.txt','w'))
+		json.dump(self.hotels,open('hotels.json','w'))
 		self.details = dict(vee.marriott.hotelRateDetial, **vee.starwood.hotelRateDetial)
-		json.dump(self.details,open('details.txt','w'))
+		json.dump(self.details,open('details.json','w'))
 
 	def showByImage(self,key,num,num_all):
 		#figure = plt.figure()
@@ -73,7 +73,7 @@ class MainQuery():
 				num = num+1
 		plt.grid()
 		plot.show()
-
+'''
 	def showLowestPrice(self):
 		self.lowest = {}
 		for key in self.details:
@@ -82,14 +82,14 @@ class MainQuery():
 			self.lowest[key] = {'price':min(zip(price.values(),price.keys()),'name' = item['name_cn'])}
 
 	def getDetails():
-	with open('details.txt','r') as f:
-		details = json.load(f)
-		return details
-
+		with open('details.txt','r') as f:
+			details = json.load(f)
+			return details
+'''
 if __name__ == '__main__':
 	#mpl.rcParams['font.san-serif'] = ['SimHei']
 	place = 'Shanghai'
-	day_in = '20170911'
+	day_in = '20170913'
 	print("正在查询  "+place + "  "+day_in[0:4]+"年"+day_in[4:6]+"月"+day_in[6:8]+"日的酒店")
 	#day_out = '20170827'
 	day_num = 30
