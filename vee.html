@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>画图</title>   
+    <script src="//www.chartjs.org/dist/2.7.0/Chart.bundle.js"></script>
+     <style>
+     
+    </style>
+</head>
+<body>
+
+<!-- 展示canvas -->
+ <div style="width:800px;width:800px;">
+    <canvas id="myChart" style="width:500px; height:300px;"     ></canvas>
+ </div>
+
+
+<!--引入 chartjs-->
+
+<script type="text/javascript">
+ // 设置参数
+ var hotel = {"name_en":"Renaissance Shanghai Yu Garden Hotel","price":{"170911":1058,"170912":1205,"170913":1205,"170914":1205,"170915":1026,"170916":931,"170917":862,"170918":960,"170919":1156,"170920":1156,"170921":1107,"170922":979,"170923":931,"170924":816,"170925":900,"170926":900,"170927":900,"170928":816,"170929":727,"170930":727,"171001":794,"171002":794,"171003":864,"171004":864,"171005":864,"171006":752,"171007":752,"171008":794,"171009":794,"171010":900},"name_cn":"上海豫园万丽酒店"}
+ var data = {
+    labels: Object.keys(hotel['price']),
+    datasets: [
+        {   data: Object.values(hotel['price']),
+            label: "Lowest Price",//图例名字
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            pointRadius: 8,//点标记大小
+            pointHoverRadius: 15,//移动到点上时的大小
+            fill: false,
+        }
+    ]
+};
+// options: options
+var options =  {
+    responsive: true,
+    title:{
+        display:true,
+        text:hotel['name_cn']
+    },
+    elements: {
+        point: {
+            pointStyle: 'rectRot'
+        }
+    },
+    scales: {
+        xAxes: [{
+            //gridLines: gridlines
+        }],
+        yAxes: [{
+            //gridLines: gridlines,
+            display: true,
+            scaleLabel: {
+                display: true,
+                labelString: 'price'
+            },
+            ticks: {
+                min: 0,
+                max: (Math.ceil(Math.max.apply(Math,Object.values(hotel['price']))/100)*100),
+                stepSize: 100
+            }
+        }]
+    },
+}
+/*
+Chart.defaults.global = {
+        scaleShowLabels : true,// 刻度是否显示标签, 即Y轴上是否显示文字
+        scaleLabel : "<%=value%>",// Y轴上的刻度,即文字
+        scaleFontFamily : "'Arial'",// 字体
+        scaleFontSize : 12,// 文字大小
+};
+*/
+// Get the context of the canvas element we want to select
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myBarChart = new Chart(ctx,
+        {   type:'line',
+            data: data,
+            options:options
+        }
+        );
+</script>
+</body>
+</html>
