@@ -156,7 +156,7 @@ var customTooltips = function (tooltip) {
 
 window.onload = function() {
     var container = document.querySelector('.container');
-    $.getJSON('/details.json',function(data){
+    $.getJSON('/showDetails/details.json',function(data){
         hotel = Object.values(data);
         alert("Totle Hotels:"+hotel.length);
         hotel.forEach(function(hotelItem){
