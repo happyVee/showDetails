@@ -42,6 +42,8 @@
         var name_en = hotelItem['name_en'];
         var date = Object.keys(priceDict);
         var price = Object.values(priceDict);
+        var avg_price = Math.ceil(price.reduce(function(a,b) {return a+b})/price.length);
+        var avg_price_list = Array.from( new Array(price.length),(v,i)=>{return avg_price});
             return {
                 type: 'line',
                 data: {
@@ -54,7 +56,16 @@
                         pointRadius: 4,//点标记大小
                         pointHoverRadius: 8,//移动到点上时的大小
                         fill: false,
-                    }
+                    },
+                    {   data: avg_price_list,
+                        label: "Average Price",//图例名字
+                        backgroundColor: 'rgb(32, 178, 170)',
+                        borderColor: 'rgb(32, 178, 170)',
+                        pointRadius: 4,//点标记大小
+                        pointHoverRadius: 8,//移动到点上时的大小
+                        fill: false,
+                    },
+
                 ]},
                 options: {
                     responsive: true,

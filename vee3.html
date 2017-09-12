@@ -24,6 +24,19 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+        .chartjs-tooltip {
+            opacity: 1;
+            position: absolute;
+            background: rgba(0, 0, 0, .7);
+            color: yellow;
+            border-radius: 3px;
+            -webkit-transition: all .1s ease;
+            transition: all .1s ease;
+            pointer-events: none;
+            -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+            padding: 4px;
+        }
     </style>
 </head>
 <body>
@@ -34,8 +47,45 @@
 </div>
 
 <!--引入 chartjs-->
+<div class="container">
 
-<script type="text/javascript">
+</div>
+
+    <div id="canvas-holder1" style="width:75%;">
+        <div class="chartjs-tooltip" id="tooltip-0"></div>
+        <div class="chartjs-tooltip" id="tooltip-1"></div>
+    </div>
+    <script>
+var customTooltips = function (tooltip) {
+        $(this._chart.canvas).css("cursor", "pointer");
+
+        var positionY = this._chart.canvas.offsetTop;
+        var positionX = this._chart.canvas.offsetLeft;
+
+        $(".chartjs-tooltip").css({
+            opacity: 0,
+        });
+
+        if (!tooltip || !tooltip.opacity) {
+            return;
+        }
+
+        if (tooltip.dataPoints.length > 0) {
+            tooltip.dataPoints.forEach(function (dataPoint) {
+                var content = [dataPoint.xLabel, dataPoint.yLabel].join(": ");
+                var $tooltip = $("#tooltip-" + dataPoint.datasetIndex);
+
+                $tooltip.html(content);
+                $tooltip.css({
+                    opacity: 1,
+                    top: positionY + dataPoint.y + "px",
+                    left: positionX + dataPoint.x + "px",
+                });
+            });
+        }
+};
+
+
  function createConfig(hotelItem) {
         var priceDict = hotelItem['price'];
         var name_cn = hotelItem['name_cn'];
@@ -57,6 +107,15 @@
                         pointHoverRadius: 8,//移动到点上时的大小
                         fill: false,
                     },
+                    {   data: avg_price_list,
+                        label: "Average Price",//图例名字
+                        backgroundColor: 'rgb(32, 178, 170)',
+                        borderColor: 'rgb(32, 178, 170)',
+                        pointRadius: 4,//点标记大小
+                        pointHoverRadius: 8,//移动到点上时的大小
+                        fill: false,
+                    },
+
                 ]},
                 options: {
                     responsive: true,
@@ -82,43 +141,17 @@
                                 stepSize: 100
                             }
                         }]
+                    },
+                    tooltips: {
+                        enabled: false,
+                        mode: 'index',
+                        intersect: false,
+                        custom: customTooltips
                     }
                 },
             };
 };
-// Define a plugin to provide data labels
-Chart.plugins.register({
-    afterDatasetsDraw: function(chart, easing) {
-        // To only draw at the end of animation, check for easing === 1
-        var ctx = chart.ctx;
 
-        chart.data.datasets.forEach(function (dataset, i) {
-            var meta = chart.getDatasetMeta(i);
-            if (!meta.hidden) {
-                meta.data.forEach(function(element, index) {
-                    // Draw the text in black, with the specified font
-                    ctx.fillStyle = 'rgb(0, 0, 0)';
-
-                    var fontSize = 10;
-                    var fontStyle = 'normal';
-                    var fontFamily = 'Helvetica Neue';
-                    ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-
-                    // Just naively convert to string for now
-                    var dataString = dataset.data[index].toString();
-
-                    // Make sure alignment settings are correct
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-
-                    var padding = 5;
-                    var position = element.tooltipPosition();
-                    ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-                });
-            }
-        });
-    }
-});
 
 
 window.onload = function() {
@@ -139,7 +172,6 @@ window.onload = function() {
         });
     });
 };
-
-</script>
+    </script>
 </body>
 </html>
