@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');//引入文件读取模块
 
-var documentRoot = 'I:/vee/selftest';
+var documentRoot = 'C:/self/selftest-master/selftest-master';
 //需要访问的文件的存放目录
 
 var server= http.createServer(function(req,res){
