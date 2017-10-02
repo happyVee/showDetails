@@ -123,9 +123,9 @@ Chart.plugins.register({
 
 window.onload = function() {
     var container = document.querySelector('.container');
-    $.getJSON('/showDetails/details.json',function(data){
+    $.getJSON('details.json',function(data){
         hotel = Object.values(data);
-        alert("Totle Hotels:"+hotel.length);
+        //alert("Totle Hotels:"+hotel.length);
         hotel.forEach(function(hotelItem){
             var div = document.createElement('div');
             div.classList.add('chart-container');
